@@ -13,12 +13,16 @@ func TestNew(t *testing.T) {
 	t.Run("without config options", func(t *testing.T) {
 		z := New(sess)
 
-		if z.cfg != sess {
-			t.Error("expected cfg to equal the passed config provider")
+		if z.uploader == nil {
+			t.Error("expected to have an uploader")
+		}
+
+		if z.uploader == nil {
+			t.Error("expected to have a downloader")
 		}
 
 		if z.concurrency != 1 {
-			t.Errorf("expected default concurrency to be 1, got %d", z.concurrency)
+			t.Errorf("expected concurrency to be %d, got %d", 1, z.concurrency)
 		}
 	})
 
