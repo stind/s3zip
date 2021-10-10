@@ -71,7 +71,15 @@ func (z S3Zip) Do(ctx context.Context, destObj Object, resources []Resource) err
 	// Start workers
 	workerQueue := gen(resources...)
 	workerChannels := make([]<-chan Resource, z.concurrency)
-	for i := 0; i < z.concurrency; i++ {
+
+	var workerCount int
+	if z.concurrency > len(resources) {
+		workerCount = z.concurrency
+	} else {
+		workerCount = len(resources)
+	}
+
+	for i := 0; i < workerCount; i++ {
 		workerChannels[i] = z.runDownloadWorker(ctx, workerQueue)
 	}
 
