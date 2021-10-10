@@ -175,6 +175,11 @@ func archive(queue <-chan Resource) (string, error) {
 		}
 	}
 
+	err = zw.Close()
+	if err != nil {
+		return "", fmt.Errorf("failed to close zip file: %w", err)
+	}
+
 	return zf.Name(), nil
 }
 
