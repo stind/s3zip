@@ -27,10 +27,14 @@ type configOption func(*S3Zip)
 func New(c awsclient.ConfigProvider, opts ...configOption) S3Zip {
 	const defaultConcurrency = 1
 
+	downloader := s3manager.NewDownloader(c, func(d *s3manager.Downloader) {
+		d.Concurrency = 1
+	})
+
 	z := S3Zip{
 		concurrency: defaultConcurrency,
 		uploader:    s3manager.NewUploader(c),
-		downloader:  s3manager.NewDownloader(c),
+		downloader:  downloader,
 	}
 
 	for _, opt := range opts {
