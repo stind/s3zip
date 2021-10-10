@@ -61,7 +61,7 @@ type Resource struct {
 
 // Object describes an S3 object.
 type Object struct {
-	Bucket string // Bucket is a bucket's ARN
+	Bucket string
 	Key    string
 }
 
