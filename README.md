@@ -22,10 +22,10 @@ func main() {
 	z := s3zip.New(sess, s3zip.WithConcurrency(10))
 	ctx := context.Background()
 
-	// Where to uploade the zip archive
-	target := s3Zip.Object{
-		Bucket: "target-bucket-name",
-		Key:    "target-archive-name.zip",
+	// Where to upload the zip archive
+	destination := s3Zip.Object{
+		Bucket: "destination-bucket-name",
+		Key:    "destination-archive-name.zip",
 	}
 
 	resources := []s3zip.Resource{
@@ -45,7 +45,7 @@ func main() {
 		},
 	}
 
-	err := z.Do(ctx, target, resources...)
+	err := z.Do(ctx, destination, resources...)
 	if err != nil {
 		log.Fatal(err)
 	}
