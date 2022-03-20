@@ -205,28 +205,28 @@ func addToZip(zw *zip.Writer, res Resource) error {
 	return nil
 }
 
-func gen(resources ...Resource) <-chan Resource {
-	ch := make(chan Resource)
+func gen[T any](items ...T) <-chan T {
+	ch := make(chan T)
 
 	go func() {
 		defer close(ch)
 
-		for _, res := range resources {
-			ch <- res
+		for _, item := range items {
+			ch <- item
 		}
 	}()
 
 	return ch
 }
 
-func merge(cs ...<-chan Resource) <-chan Resource {
+func merge[T any](cs ...<-chan T) <-chan T {
 	var wg sync.WaitGroup
-	out := make(chan Resource)
+	out := make(chan T)
 
 	wg.Add(len(cs))
 
 	for _, c := range cs {
-		go func(c <-chan Resource) {
+		go func(c <-chan T) {
 			for r := range c {
 				out <- r
 			}
